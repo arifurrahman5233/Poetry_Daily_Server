@@ -14,9 +14,7 @@ const port = process.env.PORT || 7000;
 
 // const serviceAccount = require('./poetry-fb2f9-firebase-adminsdk-lzs81-0564304255.json');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+
 
 
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
@@ -25,10 +23,14 @@ admin.initializeApp({
 });
 
 
+
 // middleware
 app.use(cors());
 app.use(express.json());
 
+
+// const uri = `mongodb+srv://@cluster0.evtnx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.evtnx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
