@@ -3,13 +3,23 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config();
 const cors = require('cors');
 const admin = require("firebase-admin");
+
 const ObjectId = require('mongodb').ObjectId;
 
 const app = express();
 const port = process.env.PORT || 7000;
 
+
+// poetry-fb2f9-firebase-adminsdk-lzs81-0564304255.json
+
+// const serviceAccount = require('./poetry-fb2f9-firebase-adminsdk-lzs81-0564304255.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-// const serviceAccount = require('./online-book-selling-system-firebase-adminsdk.json')
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
@@ -19,7 +29,8 @@ admin.initializeApp({
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.lkuqr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.evtnx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function verifyToken (req, res, next) {
@@ -69,11 +80,7 @@ async function run () {
             if (requester) {
                 const requesterAccount = await usersCollection.findOne({ email: requester });
                 if (requesterAccount.role === 'admin') {
-                    const filter = { email: user.email };
-                    const updateDoc = { $set: { role: 'admin' } };
-                    const result = await usersCollection.updateOne(filter, updateDoc);
-                    console.log(result)
-                    res.json(result);
+                   
                 }
             }
             else {
